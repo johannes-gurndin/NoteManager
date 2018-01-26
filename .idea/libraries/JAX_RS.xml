@@ -1,0 +1,29 @@
+<component name="libraryTable">
+  <library name="JAX-RS" type="JAX-RS">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/aopalliance-repackaged-2.3.0-b05.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/asm-debug-all-5.0.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/hk2-api-2.3.0-b05.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/hk2-locator-2.3.0-b05.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/hk2-utils-2.3.0-b05.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/javassist-3.18.1-GA.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/javax.annotation-api-1.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/javax.inject-2.3.0-b05.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/javax.servlet-api-3.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/javax.ws.rs-api-2.0.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jaxb-api-2.2.7.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-client.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-common.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-container-servlet-core.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-container-servlet.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-guava-2.10.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/jersey-server.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/org.osgi.core-4.2.0.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/osgi-resource-locator-1.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/persistence-api-1.0.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/RohdateienJersey/JerseyDownload/validation-api-1.1.0.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
