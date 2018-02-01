@@ -30,11 +30,13 @@
       <point x="39.75" y="48.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="101.0" y="215.5" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="1.0" x="101.0" y="216.0" />
+  <SelectedNodes>
+    <node>fb8d41ab-30cc-4c5d-aed9-9a03ad926c7f.TABLE:notedb.unseen</node>
+  </SelectedNodes>
   <Categories>
-    <Category>Key columns</Category>
     <Category>Columns</Category>
+    <Category>Key columns</Category>
   </Categories>
 </Diagram>
 
