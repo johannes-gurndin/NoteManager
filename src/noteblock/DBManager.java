@@ -6,7 +6,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 public class DBManager {
     private static MysqlConnectionPoolDataSource dbObject = null;
 
-    private void establish_connection() {
+    private static void establish_connection() {
         dbObject = new MysqlConnectionPoolDataSource();
         dbObject.setUser("root");
         dbObject.setPassword("");
@@ -14,7 +14,7 @@ public class DBManager {
         dbObject.setDatabaseName("notedb");
     }
 
-    public MysqlConnectionPoolDataSource getDbObject() {
+    public static MysqlConnectionPoolDataSource getDbObject() {
         if (dbObject == null)
             establish_connection();
         return dbObject;

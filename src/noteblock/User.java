@@ -34,6 +34,16 @@ public class User {
         return null;
     }
 
+    /**
+     * If the token is connected to a username the method returnes that specific username, else null is
+     * returned.
+     *
+     * @param token the token connected to the username
+     * @return the username of connected to the token or null
+     */
+    public static String check(String token) {
+        return usertokens.keySet().contains(token) ? usertokens.get(token) : null;
+    }
     public String getUsername() {
         return username;
     }
