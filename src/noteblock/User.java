@@ -2,12 +2,15 @@ package noteblock;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
 
 @XmlRootElement
 public class User {
+    private static HashMap<String, String> usertokens = new HashMap<>();
     private String username;
     private String password;
     private String token;
+
 
     public User() {
 
@@ -19,7 +22,15 @@ public class User {
         this.token = token;
     }
 
-    public static String checkUser() {
+    /**
+     * Checks if the User is registered in the Database. If that
+     * is the case, a generated Token will be returned and
+     * user + token will be saved in the static Hashmap. In any
+     * other case "false" will be returned.
+     *
+     * @return the generated Token or "false
+     */
+    public String login() {
         return null;
     }
 
