@@ -1,7 +1,9 @@
 package noteblock;
 
-
 import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DBManager {
     private static MysqlConnectionPoolDataSource dbObject = null;
@@ -14,10 +16,15 @@ public class DBManager {
         dbObject.setDatabaseName("notedb");
     }
 
-    public static MysqlConnectionPoolDataSource getDbObject() {
+    public static Connection getDBConnection() {
         if (dbObject == null)
             establish_connection();
-        return dbObject;
+        try {
+            return dbObject.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

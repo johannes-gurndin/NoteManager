@@ -14,6 +14,9 @@ public class UsersAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String login(User user) {
-        return user.login();
+        user.login();
+        if (user.getToken() != null)
+            return "OK";
+        return "NOK";
     }
 }

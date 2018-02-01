@@ -1,8 +1,16 @@
 package noteblock;
 
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Random;
 
 @XmlRootElement
 public class User {
@@ -28,10 +36,33 @@ public class User {
      * user + token will be saved in the static Hashmap. In any
      * other case "false" will be returned.
      *
-     * @return the generated Token or "false
      */
-    public String login() {
-        return null;
+    public void login() {
+        Connection cnn = DBManager.getDBConnection();
+        assert cnn != null;
+        try {
+            PreparedStatement pstmt = cnn.prepareStatement("SELECT COUNT(*) FROM users WHERE uname=? AND upass=SHA2(?);");
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            if (rs.getInt(1) == 1) {
+                Random rnd = new Random();
+                try {
+                    MessageDigest md = MessageDigest.getInstance("md5");
+                    String base = rnd.nextInt(1000000) + "" + System.currentTimeMillis();
+                    token = DatatypeConverter.printHexBinary(md.digest(base.getBytes())).toUpperCase();
+                    usertokens.put(token, username);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                token = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
