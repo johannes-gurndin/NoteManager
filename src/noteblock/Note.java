@@ -2,14 +2,64 @@ package noteblock;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 @XmlRootElement
 public class Note {
-    private String a, b, c;
+    private int id;
+    private String title;
+    private String text;
+    private String creatorname;
+    private String topic;
 
     public Note() {
     }
 
-    public Note(String... attrs) {
+    public Note(int id, String title, String text, String creatorname, String topic) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.creatorname = creatorname;
+        this.topic = topic;
+    }
+
+    public static ArrayList<Note> getAllNotes(ArrayList<Filter> filter) {
+        return null;
+    }
+
+    public static boolean insert(Note note) {
+        return false;
+    }
+
+    public static boolean delete(int id) {
+        return false;
+    }
+
+    public static boolean update(Note note) {
+        return false;
+    }
+
+    public String getCreatorname() {
+        return creatorname;
+    }
+
+    public void setCreatorname(String creatorname) {
+        this.creatorname = creatorname;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

@@ -1,22 +1,24 @@
 package noteblock;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("user")
 public class UsersAPI {
 
     @POST
-    @Path("login")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("login/{username}")
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String login(User user) {
-        user.login();
-        if (user.getToken() != null)
-            return "OK";
-        return "NOK";
+    public String login(@PathParam("username") String username, String password) {
+        return User.login(username, password);
+    }
+
+    @POST
+    @Path("logout")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String logout(String token) {
+        return User.logout(token);
     }
 }

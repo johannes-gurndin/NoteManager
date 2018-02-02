@@ -13,6 +13,9 @@ public class TopicAPI {
     @Path("getall/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Topic> getTopics(@PathParam("token") String token) {
+        if (User.check(token) == null) {
+            return null;
+        }
         return Topic.getAllTopics();
     }
 }
