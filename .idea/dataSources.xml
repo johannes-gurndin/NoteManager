@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="notedb@localhost" uuid="fb8d41ab-30cc-4c5d-aed9-9a03ad926c7f">
+    <data-source source="LOCAL" name="@192.168.56.101" uuid="98064946-d635-4f77-984d-7be3ab78ed9a">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/notedb</jdbc-url>
+      <jdbc-url>jdbc:mysql://192.168.56.101:3306</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
