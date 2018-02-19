@@ -27,17 +27,14 @@ public class Note {
         return null;
     }
 
-    public static boolean insert(Note note) {
-        return false;
+    public int save() {
+        return 0;
     }
 
     public static boolean delete(int id) {
         return false;
     }
 
-    public static boolean update(Note note) {
-        return false;
-    }
 
     public String getCreatorname() {
         return creatorname;

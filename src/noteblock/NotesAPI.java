@@ -27,7 +27,7 @@ public class NotesAPI {
         if (User.check(token) == "false") {
             return "false";
         }
-        return String.valueOf(Note.insert(note));
+        return String.valueOf(note.save());
     }
 
     @PUT
@@ -38,7 +38,7 @@ public class NotesAPI {
         if (User.check(token) == "false") {
             return "false";
         }
-        return String.valueOf(Note.update(note));
+        return String.valueOf(note.save());
     }
 
     @DELETE
