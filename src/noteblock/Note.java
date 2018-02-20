@@ -1,16 +1,12 @@
 package noteblock;
 
 
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Random;
 
 @XmlRootElement
 public class Note {
@@ -23,7 +19,7 @@ public class Note {
     public Note() {
     }
 
-    public Note(int id, String title, String text, String creatorname, String topic) {
+    public Note(int id, String title, String text, String topic, String creatorname) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -32,6 +28,7 @@ public class Note {
     }
 
     public static ArrayList<Note> getAllNotes(ArrayList<Filter> filter) {
+        ArrayList<Note> ret = new ArrayList<>();
 
         String filter_q = "";
         for(Filter f:filter) {
@@ -46,24 +43,86 @@ public class Note {
             for(Filter fv:filter)
                 pstmt.setString(c++, fv.getValue());
             ResultSet rs = pstmt.executeQuery();
-
+            Note n;
             while (rs.next()){
-                rs.
+                n = new Note(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+                ret.add(n);
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public int save() {
-        return 0;
+        return ret;
     }
 
     public static boolean delete(int id) {
-        return false;
+        boolean ret = false;
+        Connection conn = DBManager.getDBConnection();
+        assert conn != null;
+        PreparedStatement stmt = null;
+        try {
+            conn.setAutoCommit(false);
+            stmt = conn.prepareStatement("DELETE FROM notes WHERE nid = ?");
+            stmt.setInt(1, id);
+            ret = DBManager.expectOne(stmt.executeUpdate());
+            if (ret) {
+                conn.commit();
+            } else {
+                conn.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+            }
+        }
+        return ret;
+    }
+
+    public int save() {
+        int ret = 0;
+        Connection conn = DBManager.getDBConnection();
+        assert conn != null;
+        PreparedStatement stmt = null;
+        try {
+            if (this.id == 0) {
+                //INSERT
+                stmt = conn.prepareStatement("INSERT INTO notes(ntitle, ntext, ntopic, ncreator) VALUES(?,?,?,?)");
+                stmt.setString(1, this.title);
+                stmt.setString(2, this.text);
+                stmt.setString(3, this.topic);
+                stmt.setString(4, this.creatorname);
+                ret = stmt.executeUpdate();
+            } else {
+                //UPDATE
+                stmt = conn.prepareStatement("UPDATE notes SET ntitle=?, ntext=? ntopic=?, ncreator=? WHERE nid=?");
+                stmt.setString(1, this.title);
+                stmt.setString(2, this.text);
+                stmt.setString(3, this.topic);
+                stmt.setString(4, this.creatorname);
+                stmt.setInt(5, this.id);
+                ret = stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+            }
+        }
+        return ret;
     }
 
 

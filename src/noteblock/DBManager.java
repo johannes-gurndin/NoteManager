@@ -27,4 +27,7 @@ public class DBManager {
         return null;
     }
 
+    public static boolean expectOne(int i) {
+        return i == 1;
+    }
 }
