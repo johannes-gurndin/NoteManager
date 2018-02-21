@@ -26,12 +26,11 @@ public class User {
         Connection cnn = DBManager.getDBConnection();
         assert cnn != null;
         try {
-            PreparedStatement pstmt = cnn.prepareStatement("SELECT COUNT(*) FROM users WHERE uname=? AND upass=SHA2(?, 256);");
+            PreparedStatement pstmt = cnn.prepareStatement("SELECT COUNT(*) FROM users WHERE uname=? AND upass=?;");
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
-
             if (rs.getInt(1) == 1) {
                 Random rnd = new Random();
                 try {
@@ -59,7 +58,7 @@ public class User {
      * @return the username of connected to the token or null
      */
     public static String check(String token) {
-        return usertokens.containsKey(token) ? usertokens.get(token) : null;
+        return usertokens.getOrDefault(token, "false");
     }
 
     public static String logout(String token) {

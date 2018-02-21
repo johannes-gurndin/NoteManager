@@ -13,7 +13,7 @@ public class NotesAPI {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public ArrayList<Note> getAllNotes(@PathParam("token") String token, ArrayList<Filter> filter) {
-        if (User.check(token) == "false") {
+        if (User.check(token).equals("false")) {
             return null;
         }
         return Note.getAllNotes(filter);
@@ -31,7 +31,7 @@ public class NotesAPI {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.TEXT_PLAIN)
     public String insertNote(@PathParam("token") String token, Note note) {
-        if (User.check(token) == "false") {
+        if (User.check(token).equals("false")) {
             return "false";
         }
         return String.valueOf(note.save());
@@ -42,7 +42,7 @@ public class NotesAPI {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateNote(@PathParam("token") String token, Note note) {
-        if (User.check(token) == "false") {
+        if (User.check(token).equals("false")) {
             return "false";
         }
         return String.valueOf(note.save());
