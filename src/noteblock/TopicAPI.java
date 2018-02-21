@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TopicAPI {
     @GET
     @Path("getall/{token}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_XML)
     public ArrayList<Topic> getTopics(@PathParam("token") String token) {
         if (User.check(token) == null) {
             return null;

@@ -14,11 +14,11 @@ public class UsersAPI {
         return User.login(username, password);
     }
 
-    @POST
-    @Path("logout")
+    @GET
+    @Path("logout/{token}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String logout(String token) {
+    public String logout(@PathParam("token") String token) {
         return User.logout(token);
     }
 }

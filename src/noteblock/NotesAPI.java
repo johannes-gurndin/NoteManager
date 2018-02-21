@@ -10,7 +10,7 @@ public class NotesAPI {
 
     @POST
     @Path("get/{token}")
-    @Consumes({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public ArrayList<Note> getAllNotes(@PathParam("token") String token, ArrayList<Filter> filter) {
         if (User.check(token) == "false") {
@@ -19,9 +19,16 @@ public class NotesAPI {
         return Note.getAllNotes(filter);
     }
 
+    @GET
+    @Path("getAll")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public ArrayList<Note> get() {
+        return Note.getAllNotes(null);
+    }
+
     @POST
     @Path("insert/{token}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.TEXT_PLAIN)
     public String insertNote(@PathParam("token") String token, Note note) {
         if (User.check(token) == "false") {

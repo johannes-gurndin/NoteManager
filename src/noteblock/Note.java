@@ -11,9 +11,13 @@ import java.util.ArrayList;
 @XmlRootElement
 public class Note {
     private int id;
+
     private String title;
+
     private String text;
+
     private String creatorname;
+
     private String topic;
 
     public Note() {
@@ -30,6 +34,9 @@ public class Note {
     public static ArrayList<Note> getAllNotes(ArrayList<Filter> filter) {
         ArrayList<Note> ret = new ArrayList<>();
 
+        if (filter == null)
+            filter = new ArrayList<>();
+
         String filter_q = "";
         for(Filter f:filter) {
             filter_q += (f.getKey()+"=? AND ");
@@ -45,7 +52,8 @@ public class Note {
             ResultSet rs = pstmt.executeQuery();
             Note n;
             while (rs.next()){
-                n = new Note(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+                n = new Note(rs.getInt("nid"), rs.getString("ntitle"), rs.getString("ntext"), rs.getString("ntopic"), rs.getString("creator"));
+                System.out.println(n.toString());
                 ret.add(n);
             }
 
@@ -94,7 +102,7 @@ public class Note {
         try {
             if (this.id == 0) {
                 //INSERT
-                stmt = conn.prepareStatement("INSERT INTO notes(ntitle, ntext, ntopic, ncreator) VALUES(?,?,?,?)");
+                stmt = conn.prepareStatement("INSERT INTO notes(ntitle, ntext, ntopic, creator) VALUES(?,?,?,?)");
                 stmt.setString(1, this.title);
                 stmt.setString(2, this.text);
                 stmt.setString(3, this.topic);
@@ -102,7 +110,7 @@ public class Note {
                 ret = stmt.executeUpdate();
             } else {
                 //UPDATE
-                stmt = conn.prepareStatement("UPDATE notes SET ntitle=?, ntext=? ntopic=?, ncreator=? WHERE nid=?");
+                stmt = conn.prepareStatement("UPDATE notes SET ntitle=?, ntext=? ntopic=?, creator=? WHERE nid=?");
                 stmt.setString(1, this.title);
                 stmt.setString(2, this.text);
                 stmt.setString(3, this.topic);
@@ -148,5 +156,26 @@ public class Note {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic: " + this.topic + "\nTitle: " + this.title + "\nCreator: " + this.creatorname + "\n\n" + this.text;
     }
 }
