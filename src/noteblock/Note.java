@@ -23,12 +23,71 @@ public class Note {
     public Note() {
     }
 
+    public Note(int id) {
+        this.id = id;
+    }
+
     public Note(int id, String title, String text, String topic, String creatorname) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.creatorname = creatorname;
         this.topic = topic;
+    }
+
+    public static ArrayList<Note> getUnseenNotes(String user) {
+        int user_id;
+        ArrayList<Note> ret = new ArrayList<>();
+        Connection conn = DBManager.getDBConnection();
+        assert conn != null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement("SELECT * FROM notes WHERE nid IN (SELECT nid FROM unseen WHERE uid=?);");
+            stmt.setString(1, user);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ret.add(new Note(rs.getInt("nid")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+            }
+        }
+        return ret;
+    }
+
+    public static boolean setSeen(String user, int id) {
+        int user_id;
+        boolean ret = false;
+        Connection conn = DBManager.getDBConnection();
+        assert conn != null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement("DELETE FROM unseen WHERE nid =? AND uid=?;");
+            stmt.setInt(1, id);
+            stmt.setString(2, user);
+            ret = stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+            }
+        }
+        return ret;
     }
 
     public static ArrayList<Note> getAllNotes(ArrayList<Filter> filter) {
@@ -38,20 +97,20 @@ public class Note {
             filter = new ArrayList<>();
 
         String filter_q = "";
-        for(Filter f:filter) {
-            filter_q += (f.getKey()+"=? AND ");
+        for (Filter f : filter) {
+            filter_q += (f.getKey() + "=? AND ");
         }
         filter_q += "1";
         Connection cnn = DBManager.getDBConnection();
         assert cnn != null;
         try {
-            PreparedStatement pstmt = cnn.prepareStatement("SELECT * FROM notes, users WHERE creator=uid "+(filter_q.equals("") ? "" : " AND " + filter_q)+";");
+            PreparedStatement pstmt = cnn.prepareStatement("SELECT * FROM notes, users WHERE creator=uid " + (filter_q.equals("") ? "" : " AND " + filter_q) + ";");
             int c = 1;
-            for(Filter fv:filter)
+            for (Filter fv : filter)
                 pstmt.setString(c++, fv.getValue());
             ResultSet rs = pstmt.executeQuery();
             Note n;
-            while (rs.next()){
+            while (rs.next()) {
                 n = new Note(rs.getInt("nid"), rs.getString("ntitle"), rs.getString("ntext"), rs.getString("ntopic"), rs.getString("uname"));
                 System.out.println(n.toString());
                 ret.add(n);
@@ -100,18 +159,9 @@ public class Note {
         assert conn != null;
         PreparedStatement stmt = null;
         try {
-            try{
-                Integer.parseInt(creatorname);
-            }catch (Exception e){
-                stmt = conn.prepareStatement("SELECT uid FROM users WHERE uname=?;");
-                stmt.setString(1, creatorname);
-                ResultSet rs = stmt.executeQuery();
-                rs.next();
-                this.creatorname = rs.getInt(1)+"";
-            }
             if (this.id == 0) {
                 //INSERT
-                stmt = conn.prepareStatement("INSERT INTO notes(ntitle, ntext, ntopic, creator) VALUES(?,?,?,?);", new String[] {"nid"});
+                stmt = conn.prepareStatement("INSERT INTO notes(ntitle, ntext, ntopic, creator) VALUES(?,?,?,?);", new String[]{"nid"});
                 stmt.setString(1, this.title);
                 stmt.setString(2, this.text);
                 stmt.setString(3, this.topic);
@@ -119,18 +169,17 @@ public class Note {
                 ret = stmt.executeUpdate();
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        ret = (int)generatedKeys.getLong(1);
-                    }
-                    else {
+                        ret = (int) generatedKeys.getLong(1);
+                    } else {
                         throw new SQLException("Creating user failed, no ID obtained.");
                     }
                 }
                 PreparedStatement add_unseen_stmt = conn.prepareStatement("INSERT INTO unseen(nid, uid) VALUES(?,?);");
                 add_unseen_stmt.setInt(1, ret);
-                stmt = conn.prepareStatement("SELECT uid FROM users WHERE uname!=?;");
+                stmt = conn.prepareStatement("SELECT uid FROM users WHERE uid<>?;");
                 stmt.setString(1, creatorname);
                 ResultSet rs = stmt.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     add_unseen_stmt.setInt(2, rs.getInt(1));
                     add_unseen_stmt.executeUpdate();
                 }

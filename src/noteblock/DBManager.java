@@ -10,9 +10,9 @@ public class DBManager {
 
     private static void establish_connection() {
         dbObject = new MysqlConnectionPoolDataSource();
-        dbObject.setUser("root");
-        dbObject.setPassword("");
-        dbObject.setServerName("localhost");
+        dbObject.setUser("user1");
+        dbObject.setPassword("plapla11");
+        dbObject.setServerName("192.168.56.101");
         dbObject.setDatabaseName("notedb");
     }
 

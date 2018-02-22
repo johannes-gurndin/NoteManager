@@ -20,6 +20,28 @@ public class NotesAPI {
     }
 
     @GET
+    @Path("getUnseen/{token}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public ArrayList<Note> getAllNotes(@PathParam("token") String token) {
+        String user = User.check(token);
+        if (user.equals("false")) {
+            return null;
+        }
+        return Note.getUnseenNotes(user);
+    }
+
+    @GET
+    @Path("setSeen/{token}/{id}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public boolean setSeen(@PathParam("token") String token, @PathParam("id") int id) {
+        String user = User.check(token);
+        if (user.equals("false")) {
+            return false;
+        }
+        return Note.setSeen(user, id);
+    }
+
+    @GET
     @Path("getAll")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public ArrayList<Note> get() {
