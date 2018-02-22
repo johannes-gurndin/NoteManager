@@ -1,7 +1,3 @@
-CREATE DATABASE notedb;
-
-USE notedb;
-
 CREATE TABLE notes
 (
   nid      INT AUTO_INCREMENT
@@ -14,7 +10,7 @@ CREATE TABLE notes
 )
   ENGINE = InnoDB;
 
-CREATE INDEX creator
+CREATE INDEX notes_users_uname_fk
   ON notes (creator);
 
 CREATE TABLE unseen
@@ -37,9 +33,15 @@ CREATE TABLE users
   uid   INT AUTO_INCREMENT
     PRIMARY KEY,
   uname VARCHAR(100) NOT NULL,
-  upass VARCHAR(64)  NULL
+  upass VARCHAR(64)  NULL,
+  CONSTRAINT users_uname_uindex
+  UNIQUE (uname)
 )
   ENGINE = InnoDB;
+
+ALTER TABLE notes
+  ADD CONSTRAINT notes_users_uname_fk
+FOREIGN KEY (creator) REFERENCES users (uname);
 
 ALTER TABLE unseen
   ADD CONSTRAINT unseen_ibfk_2
