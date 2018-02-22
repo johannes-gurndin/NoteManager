@@ -1,3 +1,7 @@
+DROP DATABASE notedb;
+CREATE DATABASE notedb;
+USE notedb;
+
 CREATE TABLE notes
 (
   nid      INT AUTO_INCREMENT

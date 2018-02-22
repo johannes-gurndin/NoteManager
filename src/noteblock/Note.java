@@ -42,6 +42,7 @@ public class Note {
         assert conn != null;
         PreparedStatement stmt = null;
         try {
+
             stmt = conn.prepareStatement("SELECT * FROM notes WHERE nid IN (SELECT nid FROM unseen WHERE uid=?);");
             stmt.setString(1, user);
             ResultSet rs = stmt.executeQuery();
@@ -65,7 +66,6 @@ public class Note {
     }
 
     public static boolean setSeen(String user, int id) {
-        int user_id;
         boolean ret = false;
         Connection conn = DBManager.getDBConnection();
         assert conn != null;
@@ -74,7 +74,7 @@ public class Note {
             stmt = conn.prepareStatement("DELETE FROM unseen WHERE nid =? AND uid=?;");
             stmt.setInt(1, id);
             stmt.setString(2, user);
-            ret = stmt.execute();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -104,14 +104,14 @@ public class Note {
         Connection cnn = DBManager.getDBConnection();
         assert cnn != null;
         try {
-            PreparedStatement pstmt = cnn.prepareStatement("SELECT * FROM notes, users WHERE creator=uid " + (filter_q.equals("") ? "" : " AND " + filter_q) + ";");
+            PreparedStatement pstmt = cnn.prepareStatement("SELECT * FROM notes WHERE " + filter_q + ";");
             int c = 1;
             for (Filter fv : filter)
                 pstmt.setString(c++, fv.getValue());
             ResultSet rs = pstmt.executeQuery();
             Note n;
             while (rs.next()) {
-                n = new Note(rs.getInt("nid"), rs.getString("ntitle"), rs.getString("ntext"), rs.getString("ntopic"), rs.getString("uname"));
+                n = new Note(rs.getInt("nid"), rs.getString("ntitle"), rs.getString("ntext"), rs.getString("ntopic"), rs.getString("creator"));
                 System.out.println(n.toString());
                 ret.add(n);
             }
@@ -176,11 +176,11 @@ public class Note {
                 }
                 PreparedStatement add_unseen_stmt = conn.prepareStatement("INSERT INTO unseen(nid, uid) VALUES(?,?);");
                 add_unseen_stmt.setInt(1, ret);
-                stmt = conn.prepareStatement("SELECT uid FROM users WHERE uid<>?;");
+                stmt = conn.prepareStatement("SELECT uname FROM users WHERE uname<>?;");
                 stmt.setString(1, creatorname);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-                    add_unseen_stmt.setInt(2, rs.getInt(1));
+                    add_unseen_stmt.setString(2, rs.getString(1));
                     add_unseen_stmt.executeUpdate();
                 }
 
