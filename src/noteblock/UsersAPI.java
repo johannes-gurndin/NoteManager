@@ -2,6 +2,7 @@ package noteblock;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 
 @Path("user")
 public class UsersAPI {
@@ -21,4 +22,9 @@ public class UsersAPI {
     public String logout(@PathParam("token") String token) {
         return User.logout(token);
     }
+
+    @GET
+    @Path("getall/{token}")
+    @Produces(MediaType.APPLICATION_XML)
+    public ArrayList<Filter> getAll(@PathParam("token") String token){ return User.getAll(); }
 }

@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ public class User {
         Connection cnn = DBManager.getDBConnection();
         assert cnn != null;
         try {
-            PreparedStatement pstmt = cnn.prepareStatement("SELECT COUNT(*) FROM users WHERE uname=? AND upass=?;");
+            PreparedStatement pstmt = cnn.prepareStatement("SELECT COUNT(*) FROM users WHERE uname=? AND upass=SHA2(?, 256);");
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery();
@@ -67,5 +68,26 @@ public class User {
             return "true";
         }
         return "false";
+    }
+    public static ArrayList<Filter> getAll(){
+        ArrayList<Filter> ret = new ArrayList<>();
+        Connection conn = DBManager.getDBConnection();
+        assert conn != null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.prepareStatement("SELECT uname, upass FROM users");
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                ret.add(new Filter(rs.getString(1), rs.getString(2)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBManager.closeConn(conn);
+            DBManager.closeRs(rs);
+            DBManager.closeStmt(stmt);
+        }
+        return ret;
     }
 }
